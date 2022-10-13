@@ -4,7 +4,25 @@ import axios from "axios";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-export const Grid = ({ users }) => {
+export const Grid = ({ users, setUsers, setOnEdit }) => {
+  const handleEdit = (item) => {
+    setOnEdit(item);
+  };
+
+  const handleDelete = async (id) => {
+    await axios
+      .delete("http://localhost:8800/" + id)
+      .then(({ data }) => {
+        const newArray = users.filter((user) => user.id !== id);
+
+        setUsers(newArray);
+        toast.success(data);
+      })
+      .catch(({ data }) => toast.error(data));
+
+    setOnEdit(null);
+  };
+
   return (
     <S.Table>
       <S.THead>
@@ -19,16 +37,16 @@ export const Grid = ({ users }) => {
       <S.TBody>
         {users.map((item, i) => (
           <S.Tr key={i}>
-            <S.Td width="30%">{item.name}</S.Td>
+            <S.Td width="30%">{item.nome}</S.Td>
             <S.Td width="30%">{item.email}</S.Td>
             <S.Td width="20%" onlyWeb>
-              {item.phone}
+              {item.fone}
             </S.Td>
             <S.Td alignCenter width="5%">
-              <FaEdit />
+              <FaEdit onClick={() => handleEdit(item)} />
             </S.Td>
             <S.Td alignCenter width="5%">
-              <FaTrash />
+              <FaTrash onClick={() => handleDelete(item.id)} />
             </S.Td>
           </S.Tr>
         ))}

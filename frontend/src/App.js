@@ -27,9 +27,9 @@ function App() {
   return (
     <>
       <S.Container>
-        <S.Title>Usuários:</S.Title>
-        <Form />
-        <Grid users={users} />
+        <S.Title>USUÁRIOS</S.Title>
+        <Form onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
+        <Grid setOnEdit={setOnEdit} users={users} setUsers={setUsers} />
       </S.Container>
       <ToastContainer autoClose={3000} position={toast.POSITION.TOP_CENTER} />
       <GlobalStyle />
